@@ -43,16 +43,34 @@
   <script src="./libraries/p5.js"></script>
   <script src="./libraries/p5.sounds.js"></script>
   <script src="./sketch.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://rawgit.com/vitmalina/w2ui/master/dist/w2ui.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://rawgit.com/vitmalina/w2ui/master/dist/w2ui.min.css" />
 </head>
 
 <body>
   <main>
     <h1>Draw Me A Bacteria </h1>
+
+    <div id="layout" style="width: 100%; height: 600px;"></div>
+
+      <script type="text/javascript">
+      $(function () {
+          var pstyle = 'border: 1px solid #dfdfdf; padding: 5px;';
+          $('#layout').w2layout({
+              name: 'layout',
+              panels: [
+                  { type: 'top', size: 50, style: pstyle, content: 'top' },
+                  { type: 'left', size: 200, style: pstyle, content: 'left' },
+                  { type: 'main', style: pstyle, content: "WHERE AM I"}
+              ]
+          });
+      });
+      </script>
+
     <div class="row">
-      <div id="buttonContainer" class="column" style="background-color:#aaa;">
-      </div>
-      <div id="canvasContainer" class="column" style="background-color:#bbb;">
-      </div>
+      <div id="buttonContainer" class="column" style="background-color:#aaa;"></div>
+      <div id="canvasContainer" class="column" style="background-color:#bbb;"></div>
     </div>
   </main>
 </body>

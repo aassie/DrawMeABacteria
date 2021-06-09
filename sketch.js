@@ -19,7 +19,7 @@ function setup(){
     const bbleft = box.left + window.pageXOffset;
 }
     let c=createCanvas(sketchWidth, sketchHeight);
-    c.parent('canvasContainer');
+    c.parent('layout');
     translate(sketchWidth/2, sketchHeight/2);
     button = createButton('redraw');
       button.position(bbtop, bbtop);
