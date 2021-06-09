@@ -6,6 +6,8 @@ var bbtop;
 var bbright
 var bbbottom
 var bbleft
+let gui;
+let button;
 
 function setup(){
   sketchWidth = document.getElementById("canvasContainer").offsetWidth;
@@ -13,30 +15,42 @@ function setup(){
   buttonbox = document.getElementById("buttonContainer");
   function getCoords(buttonbox) {
   let box = elem.getBoundingClientRect();
-    const bbtop = box.top + window.pageYOffset;
-    const bbright = box.right + window.pageXOffset;
-    const bbbottom = box.bottom + window.pageYOffset;
-    const bbleft = box.left + window.pageXOffset;
-}
-    let c=createCanvas(sketchWidth, sketchHeight);
-    c.parent('canvasContainer');
-    translate(sketchWidth/2, sketchHeight/2);
-    button = createButton('redraw');
-      button.position(bbtop, bbtop);
-      button.mousePressed(bacteria);
-      button.parent('buttonContainer');
-    savebutton = createButton('save');
-      savebutton.position(75, 0);
-      savebutton.mousePressed(savef);
-      savebutton.parent('buttonContainer');
-    checkbox = createCheckbox('Flagella', false);
-    checkbox.changed(flagella);
-    checkbox.position(bbtop + 1000, bbtop + 100);
-    checkbox.parent('buttonContainer');
+  const bbtop = box.top + window.pageYOffset;
+  const bbright = box.right + window.pageXOffset;
+  const bbbottom = box.bottom + window.pageYOffset;
+  const bbleft = box.left + window.pageXOffset;
+  }
+  let c=createCanvas(sketchWidth, sketchHeight);
+  c.parent('canvasContainer');
+  gui = createGui();
+  button = createButton('redraw', 50,50);
+  savebutton = createButton('save', 200,50);
+  checkbox = createToggle('Flagella',  50, 100, 80, 30);
+  checkbox.label='Flagella'
+  checkbox.rounding=0
   }
 
+function draw(){
+  drawGui();
+
+  if(button.isPressed) {
+    clear();
+    bacteria();
+  }
+
+  if(savebutton.isPressed) {
+  saveCanvas('Bacteria','png')
+  }
+
+  if (checkbox.isPressed) {
+    // Print a message when Checkbox is pressed
+    // that displays its value.
+    print(checkbox.label + " is " + checkbox.val);
+  }
+}
+
 function bacteria(){
-    clear()
+    translate(sketchWidth/2, sketchHeight/2);
     background(255,255,255,0);
     rotate(random(-PI/10,PI/10))
     //noLoop();
@@ -55,7 +69,7 @@ function bacteria(){
     const cf2 = random(100,200)
     const cf3 = random(0,255)
 
-    if ( fcheck == 1) {
+    if (checkbox.val) {
     beginShape();
      fill(cf1-40, cf2-40, cf3)
      noStroke();
@@ -129,21 +143,3 @@ function bacteria(){
     ellipse(t2, -(t2), 10, 10);
 
   }
-
-
-
-
-function flagella(){
-  if (this.checked()) {
-      fcheck = 1;
-      console.log(fcheck);
-    } else {
-      fcheck = 0;
-      console.log(fcheck);
-    }
-    return fcheck;
-}
-
-function savef(){
-  saveCanvas('Bacteria','png')
-}

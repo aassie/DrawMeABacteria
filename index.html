@@ -11,18 +11,11 @@
 }
 
 /* Create two equal columns that floats next to each other */
-.column {
+.row{
   float: left;
-  width: 50%;
+  width: 100%;
   padding: 10px;
-  height: 600px; /* Should be removed. Only for demonstration */
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+  height: 600px;
 }
 .canvasContainer{
       box-sizing: border-box;
@@ -43,16 +36,14 @@
   <script src="./libraries/p5.js"></script>
   <script src="./libraries/p5.sounds.js"></script>
   <script src="./sketch.js"></script>
+  <script src="./libraries/p5.touchgui.js"></script>
 </head>
 
 <body>
   <main>
     <h1>Draw Me A Bacteria </h1>
 
-    <div class="row">
-      <div id="buttonContainer" class="column" style="background-color:#aaa;"></div>
-      <div id="canvasContainer" class="column" style="background-color:#bbb;"></div>
-    </div>
+    <div  id="canvasContainer" class="row"></div>
   </main>
 </body>
 
