@@ -14,7 +14,7 @@ let controlpanel= function(cont){
   cont.setup = function(){
     controlWidth = document.getElementById("Control").offsetWidth;
     controlHeight = document.getElementById("Control").offsetHeight;
-    cont.createCanvas(controlWidth, controlHeight);
+    //cont.createCanvas(controlWidth, controlHeight);
     cont.background(255,255,255,0);
 
     button = cont.createButton('redraw');
@@ -27,7 +27,7 @@ let controlpanel= function(cont){
     checkbox.changed(cont.flagellabox)
 
     cont.textSize(18);
-    cont.text("Eye(s)",10,10)
+    cont.text("Eye(s)",10,100)
 
     eyesel = cont.createSelect();
     eyesel.option('1');
@@ -36,7 +36,7 @@ let controlpanel= function(cont){
     eyesel.changed(cont.eyeSelevent);
 
     bLslider = cont.createSlider(20, 100,50);
-    bLslider.style('width', '80px');
+    bLslider.style('width', '100px');
   }
   cont.draw=function(){
     BLmodule = (bLslider.value()/100)
