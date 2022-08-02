@@ -101,20 +101,25 @@ sketch=function(p) {
 
     BWmodule = p.random(0.2,1)
     BWfinal = BWmodule*r
-    BLmodule = p.random(0,1)
+    BLmodule = p.random(0.2,1)
     BLfinal = BLmodule*r
     //flagella
-    h = p.random((BLfinal+b)*1.2,controlHeight/3);
+    h = p.random((BLfinal/2),controlHeight/3);
     h1 = (h*p.random(0.6,0.8));
-    h2 = (h*p.random(0.8,0.9));
-    h3 = (h2*p.random(1.1,1.2));
-    h4 = (h*p.random(0.8,0.9));
-    h5 = (h4*p.random(1.1,1.2));
+    BL2 = (BLfinal*0.7);
+    h2 = ((BL2+h)*p.random(0.5,0.9));
+    h2b = (p.random(0.2,0.5));
+    h2c = (p.random(0.2,0.5));
+    h3 = (h2*p.random(0.7,1.2));
+    h3b = (p.random(0.8,0.9));
+    h4 = (h*p.random(0.5,1.5));
+    h5 = (h4*p.random(0.7,1.2));
+
     //eye
       if (eye == 1) {
         t2 = p.random(-5,5)
         tl = p.random(0.6,1.5)
-        t3 = p.random(BWfinal*0.55,(BWfinal)*0.65)
+        t3 = p.random(BWfinal*0.25,(BWfinal)*0.55)
         t3b = t3*tl
         t4 = p.random(t3*0.5,t3*0.8)
         t4b = t4*tl
@@ -124,7 +129,7 @@ sketch=function(p) {
       }else {
         t2 = p.random(-5,5)
         tl = p.random(0.6,1.5)
-        t3 = p.random(BWfinal*0.55,(BWfinal)*0.65)
+        t3 = p.random(BWfinal*0.25,(BWfinal)*0.55)
         t3b = t3*tl
         t4 = p.random(t3*0.5,t3*0.8)
         t4b = t4*tl
@@ -132,9 +137,6 @@ sketch=function(p) {
         t5b= t5*tl*p.random(0.6,1.5)
         t = p.random(-t3/4,t3/4)
         }
-      //Background decorations
-
-      bdCall = backgroundDecoration()
   }
 
   bacteria=function() {
@@ -142,44 +144,33 @@ sketch=function(p) {
     p.noStroke();
     p.fill(cf1, cf2, cf3);
     p.beginShape();
-    p.noStroke()
-    p.vertex(BWfinal,BLfinal)
-    p.vertex(BWfinal,-BLfinal)
-    p.quadraticVertex(BWfinal,-(BLfinal+b),0,-(BLfinal+b))
-    p.quadraticVertex(-BWfinal,-(BLfinal+b),-BWfinal,-BLfinal)
-    p.vertex(-BWfinal,-BLfinal)
-    p.vertex(-BWfinal,BLfinal)
-    p.quadraticVertex(-BWfinal,(BLfinal+b),0,(BLfinal+b))
-    p.quadraticVertex(BWfinal,(BLfinal+b),BWfinal,BLfinal)
+      p.noStroke()
+      p.rect(-BWfinal/2, -BLfinal/8, BWfinal, BLfinal,b);
     p.endShape();
 
     //Background decoration
-    bdCall
+    backgroundDecoration()
 
     //Border
     p.beginShape();
         p.stroke(cf1-40, cf2-40, cf3);
         p.strokeWeight(8);
         p.noFill()
-        p.vertex(BWfinal,BLfinal)
-        p.vertex(BWfinal,-BLfinal)
-        p.quadraticVertex(BWfinal,-(BLfinal+b),0,-(BLfinal+b))
-        p.quadraticVertex(-BWfinal,-(BLfinal+b),-BWfinal,-BLfinal)
-        p.vertex(-BWfinal,-BLfinal)
-        p.vertex(-BWfinal,BLfinal)
-        p.quadraticVertex(-BWfinal,(BLfinal+b),0,(BLfinal+b))
-        p.quadraticVertex(BWfinal,(BLfinal+b),BWfinal,BLfinal)
+        p.rect(-BWfinal/2, -BLfinal/8, BWfinal, BLfinal,b);
     p.endShape();
   }
 
   backgroundDecoration=function(){
+    p.beginShape();
     for(let j=0; j < p.random(5,25); j++){
       p.print("Blob")
         p.noStroke()
-        const partsize=p.random(5,15)
+        const partsize=p.random(5,25)
         p.fill(cf1-60, cf2-30, cf3-50)
-        p.ellipse(p.random(-(BWfinal*0.9),BWfinal*0.9),p.random(-((BLfinal+b)*0.8),(BLfinal+b)*0.8),partsize,partsize)
+        p.ellipse(p.random(-(BWfinal*0.45),BWfinal*0.5),p.random(-(BLfinal*0.45),(BLfinal*0.7)),partsize,partsize)
       }
+      p.noLoop()
+      p.endShape();
   }
 
   flagella=function(f){
@@ -189,18 +180,18 @@ sketch=function(p) {
         p.fill(cf1-40, cf2-40, cf3)
         p.noStroke();
         p.vertex(0, -h)
-        p.bezierVertex(-(b*3), -h5, (b*3), -h4, 15, -(BLfinal+(b*0.9)));
-        p.vertex(-15, -(BLfinal+(b*0.9)))
+        p.bezierVertex(-(b*3), -h5, (b*3), -h4, 15, 0);
+        p.vertex(-15, 0)
         p.bezierVertex((b*3), -h4,-(b*3), -h5, 0, -h);
         p.endShape();
         //bottom flagella
         p.beginShape();
         p.fill(cf1-40, cf2-40, cf3)
         p.noStroke();
-        p.vertex(0, h)
-        p.bezierVertex((b*3), h2, -(b*3), h3, -15, (BLfinal+(b*0.9)));
-        p.vertex(15, (BLfinal+(b*0.9)))
-        p.bezierVertex(-(b*3), h3,(b*3), h2, 0, h);
+        p.vertex(BL2, h)
+        p.bezierVertex(-(b*3),-h2*h2b,b*3,h3,BWfinal*0.1,BL2);
+        p.vertex((BWfinal*0.1), BL2);
+        p.bezierVertex(b*3,h3*h3b,-(b*3),-h2*h2c,BL2,h);
         p.endShape();
       }
   }
