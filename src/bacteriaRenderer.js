@@ -105,53 +105,57 @@ function drawPetriDishBackground(p) {
 
 /**
  * Draw texture spots on petri dish (static, no animation)
- * Uses a simple deterministic pattern based on position
+ * Uses seeded random for varied but consistent positions
  */
 function drawPetriTexture(p, cx, cy, maxRadius) {
   p.noStroke();
 
-  // Generate consistent spots based on canvas size
-  const spotCount = 60;
-  const seed = 12345; // Fixed seed for consistent texture
+  // Use a separate seeded random for petri dish texture
+  const petriRng = new SeededRandom(54321);
+
+  // Generate random spots with higher contrast
+  const spotCount = 70;
 
   for (let i = 0; i < spotCount; i++) {
-    // Pseudo-random but deterministic positioning
-    const angle = ((i * 137.508) % 360) * Math.PI / 180; // Golden angle distribution
-    const distRatio = ((i * 0.618 + seed * 0.001) % 1); // Distance from center (0-1)
-    const dist = distRatio * maxRadius * 0.85;
+    // Random positioning
+    const angle = petriRng.random(0, Math.PI * 2);
+    const dist = petriRng.random(0, maxRadius * 0.9);
 
     const x = cx + Math.cos(angle) * dist;
     const y = cy + Math.sin(angle) * dist;
 
-    // Size varies by position
-    const size = 3 + (i % 7) * 2;
+    // Random size
+    const size = petriRng.random(4, 16);
 
     // Calculate base gray at this position (lighter toward center)
     const posRatio = dist / maxRadius;
     const baseGray = 200 + (1 - posRatio) * 40;
 
-    // Alternate between slightly darker and slightly lighter spots
-    const variation = (i % 3 === 0) ? -15 : ((i % 3 === 1) ? 10 : -8);
-    const spotGray = baseGray + variation;
+    // Higher contrast variations - darker or lighter spots
+    const variation = petriRng.random(-35, 25);
+    const spotGray = Math.max(150, Math.min(250, baseGray + variation));
 
-    p.fill(spotGray, spotGray, spotGray - 5, 80);
+    // Higher opacity for better visibility
+    p.fill(spotGray, spotGray, spotGray - 8, 120);
     p.ellipse(x, y, size, size);
   }
 
-  // Add some smaller scattered dots
-  for (let i = 0; i < 40; i++) {
-    const angle = ((i * 222.5 + 50) % 360) * Math.PI / 180;
-    const dist = ((i * 0.382 + 0.1) % 0.9) * maxRadius;
+  // Add some smaller scattered dots with more contrast
+  for (let i = 0; i < 50; i++) {
+    const angle = petriRng.random(0, Math.PI * 2);
+    const dist = petriRng.random(0, maxRadius * 0.95);
 
     const x = cx + Math.cos(angle) * dist;
     const y = cy + Math.sin(angle) * dist;
 
     const posRatio = dist / maxRadius;
     const baseGray = 200 + (1 - posRatio) * 40;
-    const variation = (i % 2 === 0) ? 12 : -12;
+    const variation = petriRng.random(-25, 20);
+    const dotGray = Math.max(160, Math.min(245, baseGray + variation));
 
-    p.fill(baseGray + variation, baseGray + variation, baseGray + variation - 5, 60);
-    p.ellipse(x, y, 2 + (i % 3), 2 + (i % 3));
+    p.fill(dotGray, dotGray, dotGray - 5, 100);
+    const dotSize = petriRng.random(2, 6);
+    p.ellipse(x, y, dotSize, dotSize);
   }
 }
 
@@ -901,11 +905,11 @@ function drawFlagella(p) {
     });
   }
 
-  // Bottom flagella - wavy sinusoidal shape going downward
+  // Bottom flagella - wavy sinusoidal shape going downward (symmetric to top)
   if (controls.showBottomFlagella) {
     drawSinusoidalFlagellum(p, {
-      startX: body.width * 0.1,
-      startY: body.height * 0.75,
+      startX: 0,
+      startY: body.height * 7 / 8,
       length: flag.h * 0.8,
       amplitude: flag.amplitude2,
       wavelength: flag.wavelength2,

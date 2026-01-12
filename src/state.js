@@ -404,6 +404,7 @@ function resetAnimation() {
 }
 
 // Export for use in other modules
+window.SeededRandom = SeededRandom;
 window.BacteriaState = BacteriaState;
 window.generateBacteriaConstants = generateBacteriaConstants;
 window.generateWithSeed = generateWithSeed;

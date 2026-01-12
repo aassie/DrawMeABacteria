@@ -30,11 +30,15 @@ function resetSliders(values) {
 
 /**
  * Update seed display
+ * @param {number} seed - The seed value
+ * @param {boolean} modified - Whether the bacteria has been modified from the seed
  */
-function updateSeedDisplay(seed) {
+function updateSeedDisplay(seed, modified = false) {
   if (controlRefs.seedInput) {
     controlRefs.seedInput.value(seed);
   }
+  // Track if bacteria has been modified from base seed
+  BacteriaState.seedModified = modified;
 }
 
 /**
@@ -167,6 +171,12 @@ function createControlPanel(onRedraw, onSave, onUpdate) {
       controlRefs.shapeSelect.style('font-size', '11px');
       controlRefs.shapeSelect.changed(() => {
         BacteriaState.controls.shape = controlRefs.shapeSelect.value();
+        // When switching to coccus, sync width to length
+        if (controlRefs.shapeSelect.value() === 'coccus') {
+          const lengthVal = controlRefs.lengthSlider.value();
+          BacteriaState.controls.bodyWidth = lengthVal / 100;
+          controlRefs.widthSlider.value(lengthVal);
+        }
       });
       yPos += spacing - 8;
 
@@ -268,6 +278,7 @@ function createControlPanel(onRedraw, onSave, onUpdate) {
       createLabel(p, "Hue", xPos, yPos);
       controlRefs.hueSlider = createSlider(p, xPos + 30, yPos - 8, 0, 360, 0, (val) => {
         BacteriaState.controls.hueShift = val;
+        updateSeedDisplay(BacteriaState.currentSeed, true);
       });
       yPos += spacing - 8;
 
@@ -275,6 +286,12 @@ function createControlPanel(onRedraw, onSave, onUpdate) {
       createLabel(p, "Length", xPos, yPos);
       controlRefs.lengthSlider = createSlider(p, xPos + 45, yPos - 8, 0, 100, 50, (val) => {
         BacteriaState.controls.bodyLength = val / 100;
+        // Link width to length for coccus shape
+        if (BacteriaState.controls.shape === 'coccus') {
+          BacteriaState.controls.bodyWidth = val / 100;
+          if (controlRefs.widthSlider) controlRefs.widthSlider.value(val);
+        }
+        updateSeedDisplay(BacteriaState.currentSeed, true);
         onUpdate();
       });
       yPos += spacing - 8;
@@ -283,6 +300,12 @@ function createControlPanel(onRedraw, onSave, onUpdate) {
       createLabel(p, "Width", xPos, yPos);
       controlRefs.widthSlider = createSlider(p, xPos + 45, yPos - 8, 0, 100, 50, (val) => {
         BacteriaState.controls.bodyWidth = val / 100;
+        // Link length to width for coccus shape
+        if (BacteriaState.controls.shape === 'coccus') {
+          BacteriaState.controls.bodyLength = val / 100;
+          if (controlRefs.lengthSlider) controlRefs.lengthSlider.value(val);
+        }
+        updateSeedDisplay(BacteriaState.currentSeed, true);
         onUpdate();
       });
       yPos += spacing - 8;
@@ -291,6 +314,7 @@ function createControlPanel(onRedraw, onSave, onUpdate) {
       createLabel(p, "Eye Size", xPos, yPos);
       controlRefs.eyeSizeSlider = createSlider(p, xPos + 55, yPos - 8, 0, 100, 50, (val) => {
         BacteriaState.controls.eyeSize = val / 100;
+        updateSeedDisplay(BacteriaState.currentSeed, true);
         onUpdate();
       });
       yPos += spacing - 8;
@@ -299,6 +323,7 @@ function createControlPanel(onRedraw, onSave, onUpdate) {
       createLabel(p, "Blobs", xPos, yPos);
       controlRefs.blobSlider = createSlider(p, xPos + 40, yPos - 8, 0, 100, 50, (val) => {
         BacteriaState.controls.blobDensity = val / 100;
+        updateSeedDisplay(BacteriaState.currentSeed, true);
         onUpdate();
       });
       yPos += spacing - 8;
