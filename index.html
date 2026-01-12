@@ -1,44 +1,171 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Draw Me A Bacteria</title>
   <style>
-* {
-  box-sizing: border-box;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* Create two equal columns that floats next to each other */
-.column1 {
-  float: left;
-  width: 30%;
-  height: 600px;
-}
-.column2 {
-  float: left;
-  width: 70%;
-  height: 600px;
-}
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: block;
-  clear: both;
-}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+    }
 
-</style>
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+      min-height: 720px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .control-panel {
+      flex: 0 0 250px;
+      background: linear-gradient(135deg, #3c3c50 0%, #2d2d3d 100%);
+      position: relative;
+    }
+
+    .bacteria-canvas {
+      flex: 1;
+      background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
+      position: relative;
+      min-width: 400px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        min-height: auto;
+      }
+
+      .control-panel {
+        flex: 0 0 auto;
+        min-height: 680px;
+      }
+
+      .bacteria-canvas {
+        min-width: auto;
+        min-height: 400px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Style p5 elements */
+    .control-panel canvas {
+      position: absolute !important;
+      top: 0;
+      left: 0;
+    }
+
+    .bacteria-canvas canvas {
+      display: block;
+    }
+
+    /* Button hover states (applied via JS) */
+    button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* Slider styling */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      background: #555;
+      border-radius: 3px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #4CAF50;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: #4CAF50;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+
+    /* Checkbox styling */
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    /* Select styling */
+    select {
+      background: #444;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #4CAF50;
+    }
+  </style>
+
+  <!-- Load p5.js library -->
   <script src="./libraries/p5.js"></script>
-  <script src="./sketch.js"></script>
+
+  <!-- Load application modules in order -->
+  <script src="./src/state.js"></script>
+  <script src="./src/presets.js"></script>
+  <script src="./src/bacteriaRenderer.js"></script>
+  <script src="./src/controlPanel.js"></script>
+  <script src="./src/main.js"></script>
 </head>
 
 <body>
   <main>
-    <h1>Draw Me A Bacteria </h1>
-    <div  class="row">
-      <div  id="Control" class="column1" style="background:gray;"></div>
-      <div  id="Bacteria" class="column2" style="background:lightgray;"></div>
+    <h1>Draw Me A Bacteria</h1>
+    <div class="container">
+      <div id="Control" class="control-panel"></div>
+      <div id="Bacteria" class="bacteria-canvas"></div>
     </div>
   </main>
 </body>
