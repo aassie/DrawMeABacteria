@@ -2,9 +2,7 @@
 
 A p5.js application for procedurally generating cute, customizable cartoon bacteria.
 
-![Cute bacteria](https://github.com/aassie/DrawMeABacteria/blob/main/DrawMeBacteria_Banner.png)
-
-Inspired by the work of [Adria Navarro](http://adrianavarro.net/projects/generative-play/)
+![Cute bacteria](asset/DrawMeBacteria_Banner.png)
 
 ## Features
 

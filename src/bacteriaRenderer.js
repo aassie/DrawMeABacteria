@@ -890,11 +890,19 @@ function drawFlagella(p) {
   // Animation phase for waving effect
   const animPhase = anim.time * 0.004;
 
+  // Adjust flagella positions based on shape
+  // For coccus (circular), flagella should start from the top/bottom of the circle
+  // Coccus is centered at body.yOffset, so we need to offset from there
+  const isCoccus = controls.shape === 'coccus';
+  const size = Math.min(body.width, body.height);
+  const topStartY = isCoccus ? body.yOffset - size / 2 : -body.height / 8;
+  const bottomStartY = isCoccus ? body.yOffset + size / 2 : body.height * 7 / 8;
+
   // Top flagella - wavy sinusoidal shape going upward
   if (controls.showTopFlagella) {
     drawSinusoidalFlagellum(p, {
       startX: 0,
-      startY: -body.height / 8,
+      startY: topStartY,
       length: flag.h,
       amplitude: flag.amplitude1,
       wavelength: flag.wavelength1,
@@ -909,8 +917,8 @@ function drawFlagella(p) {
   if (controls.showBottomFlagella) {
     drawSinusoidalFlagellum(p, {
       startX: 0,
-      startY: body.height * 7 / 8,
-      length: flag.h * 0.8,
+      startY: bottomStartY,
+      length: flag.h,
       amplitude: flag.amplitude2,
       wavelength: flag.wavelength2,
       thickness: 10,

@@ -155,7 +155,7 @@ function createControlPanel(onRedraw, onSave, onUpdate) {
       controlRefs.saveBtn.style('border-radius', '4px');
       controlRefs.saveBtn.style('font-size', '11px');
       controlRefs.saveBtn.mousePressed(() => onSave());
-      yPos += spacing - 5;
+      yPos += spacing;
 
       // Shape selector
       createLabel(p, "Shape", xPos, yPos);
@@ -222,7 +222,7 @@ function createControlPanel(onRedraw, onSave, onUpdate) {
           controlRefs.bottomFlagellaCheck.hide();
         }
       };
-      yPos += 22;
+      yPos += 25;
 
       // Animation and pili row
       controlRefs.animCheck = p.createCheckbox(' Anim (A)', true);
@@ -382,19 +382,31 @@ function createControlPanel(onRedraw, onSave, onUpdate) {
       });
       yPos += 30;
 
-      // Credits with link
+      // Links section
       p.fill(150);
-      p.textSize(9);
-      p.text("Inspired by", xPos, yPos);
-      controlRefs.creditLink = p.createA(
-        'http://adrianavarro.net/projects/generative-play/',
-        'Adria Navarro',
-        '_blank'
-      );
-      controlRefs.creditLink.position(xPos + 55, yPos - 10);
-      controlRefs.creditLink.style('color', '#64B5F6');
-      controlRefs.creditLink.style('font-size', '9px');
-      controlRefs.creditLink.style('text-decoration', 'none');
+      p.textSize(10);
+      p.text("Links", xPos, yPos);
+      yPos += 18;
+
+      // GitHub logo/link
+      const githubImg = p.createImg('asset/github_white_noBG.png', 'GitHub');
+      githubImg.position(xPos, yPos - 12);
+      githubImg.size(20, 20);
+      githubImg.style('cursor', 'pointer');
+      githubImg.style('opacity', '0.6');
+      githubImg.mouseOver(() => githubImg.style('opacity', '1.0'));
+      githubImg.mouseOut(() => githubImg.style('opacity', '0.6'));
+      githubImg.mousePressed(() => window.open('https://github.com/aassie/DrawMeABacteria', '_blank'));
+
+      // LinkedIn logo/link
+      const linkedinImg = p.createImg('asset/InBug-White.png', 'LinkedIn');
+      linkedinImg.position(xPos + 35, yPos - 12);
+      linkedinImg.size(20, 20);
+      linkedinImg.style('cursor', 'pointer');
+      linkedinImg.style('opacity', '0.6');
+      linkedinImg.mouseOver(() => linkedinImg.style('opacity', '1.0'));
+      linkedinImg.mouseOut(() => linkedinImg.style('opacity', '0.6'));
+      linkedinImg.mousePressed(() => window.open('https://www.linkedin.com/in/adrien-assie/', '_blank'));
 
       // Function to sync control UI elements from preset
       function syncControlsFromPreset(settings) {
